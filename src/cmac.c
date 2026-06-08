@@ -3,6 +3,9 @@
 #include "common.h"
 #include "utils.h"
 
+#define ACCENTCOLOR "\033[1;36m"
+#define DEFAULT "\033[0m"
+
 // Calculate the CAMC
 unsigned char* aes_cmac(unsigned char* in, unsigned int length, unsigned char* out, unsigned char* key)
 {
@@ -27,6 +30,7 @@ unsigned char* aes_cmac(unsigned char* in, unsigned int length, unsigned char* o
     unsigned char M[n][const_Bsize];
     memset(M[0], 0, n * const_Bsize);
     memcpy(M[0], in, length);
+
     if (!flag) {
         memset(M[0] + length, 0x80, 1);
     }
@@ -50,6 +54,7 @@ unsigned char* aes_cmac(unsigned char* in, unsigned int length, unsigned char* o
     }
     block_xor(Y, M[n - 1], X);
     aes_128_encrypt(Y, out, key);
+
     free(K1);
     free(K2);
     return out;
@@ -89,7 +94,10 @@ void GenerateSubkey(unsigned char* key, unsigned char* K1, unsigned char* K2)
 
     unsigned char L[16];
     aes_128_encrypt(const_Zero, L, key);
-    print_bytes(L, 16);
+    // printf("%sL%s\n", ACCENTCOLOR, DEFAULT);
+    // print_bytes(K1, 16);
+    // print_bytes(K2, 16);
+    // print_bytes(L, 16);
     block_leftshift(K1, L);
     if (L[0] & 0x80) {
         block_xor(K1, K1, const_Rb);
