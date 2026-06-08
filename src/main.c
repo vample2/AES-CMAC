@@ -6,15 +6,6 @@
 #define ACCENTCOLOR "\033[1;36m"
 #define DEFAULT "\033[0m"
 
-void run(char* argv[]);
-
-int main(int argc, char* argv[])
-{
-    run(argv);
-
-    return 0;
-}
-
 void run(char* argv[])
 {
     unsigned char key[] = {
@@ -39,13 +30,22 @@ void run(char* argv[])
     unsigned char out[16];
 
     printf("%sInput message%s\n", ACCENTCOLOR, DEFAULT);
-    printf("%s\n", message);
+    print_bytes(message,16);
     printf("%sKey%s\n", ACCENTCOLOR, DEFAULT);
     print_bytes(key, 16);
     aes_cmac(message, sizeof(message), (unsigned char*)out, key);
     printf("%sAES-128-CMAC Result%s\n", ACCENTCOLOR, DEFAULT);
     print_bytes(out, 16);
 }
+
+
+int main(int argc, char* argv[])
+{
+    run(argv);
+
+    return 0;
+}
+
 
 
 
